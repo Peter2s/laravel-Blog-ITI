@@ -28,14 +28,14 @@ index
                 <td>{{$post['posted_by']}}</td>
                 <td>{{$post['created_at']}}</td>
                 <td>
-                    <a class="btn btn-info" href="{{ route('posts.show',['post'=>$post['id']]) }}" role="button">View </a>
-                    <a class="btn btn-primary" href="{{ route('posts.edit',['post'=>$post['id']] ) }}" role="button">Edit </a>
-                    <form class="deleteFrom d-inline" action="{{ route('posts.destroy', ['post'=>$post['id']] ) }}" method="POST">
+                    <x-button type='info' route="{{ route('posts.show' , ['post'=>$post['id']]) }}"> View </x-button>
+                    <x-button type='primary'  route="{{ route('posts.edit' , ['post'=>$post['id']]) }}"> Edit </x-button>
+                    <form class="deleteFrom d-inline" action="{{ route('posts.destroy' , ['post'=>$post['id']] ) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger"> Delete</button>
                     </form>
-
+                   
 
                 </td>
             </tr>
