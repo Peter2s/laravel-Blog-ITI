@@ -2,70 +2,65 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
-{   
+{
     public function index(){
-            $posts = [
-                [
-                    'id' => 1,
-                    'title' => 'laravel',
-                    'posted_by' => 'peter',
-                    'created_at' => '2023-04-01 10:00:00',
-                ],
-
-                [
-                    'id' => 2,
-                    'title' => 'PHP',
-                    'posted_by' => 'salah',
-                    'created_at' => '2023-04-01 10:00:00',
-                ],
-
-                [
-                    'id' => 3,
-                    'title' => 'Javascript',
-                    'posted_by' => 'samir',
-                    'created_at' => '2023-04-01 10:00:00',
-                ],
-            ];
+        $posts = Post::withTrashed()->paginate(5);
 
         return view('posts.index',['posts'=>$posts]);
     }
 
-    public function create(){
-        return view('posts.create');
+    public function create()
+    {
+        $users = User::all();
+        return view('posts.create',['users'=>$users]);
     }
     public function edit($post)
     {
-        $post = [
-            'id' => 1,
-            'title' => 'laravel',
-            'posted_by' => 'peter',
-            'created_at' => '2023-04-01 10:00:00',
-        ];
-        return view('posts.edit',['post'=>$post]);
+       return view('posts.edit',['post'=>[]]);
     }
-    public function show($post)
+    public function show($post_id)
     {
-        $post = [
-            'id' => 1,
-            'title' => 'laravel',
-            'posted_by' => 'peter',
-            'created_at' => '2023-04-01 10:00:00',
-        ];
+        $post = Post::where('id', $post_id)->first();
         return view('posts.show',['post'=>$post]);
     }
-    public function store()
+    public function store(Request $request)
     {
-        return redirect()->route('posts.index');
+        $data = $request->all();
+        $post = Post::create($data);
+        return to_route('posts.index');
     }
-    public function update($post)
+    public function update($post_id)
     {
-        return redirect()->route('posts.index');
+        return to_route('posts.index');
     }
-    public function destroy($post)
+    public function destroy($post_id)
     {
-        return redirect()->route('posts.index');
+        $post = Post::find($post_id);
+        $post->delete();
+        return to_route('posts.index');
     }
+    public function restore($post_id)
+    {
+        $post = Post::withTrashed()->findOrFail($post_id);
+        $post->restore();
+        return to_route('posts.index');
+    }
+    public function addComment($post_id){
+        $post = Post::find($post_id);
+        if($post){
+            $post->comments()->create([
+                'comment'=>request()->comment,
+                'commentable_id'=>$post_id
+            ]);
+        }
+
+        return to_route('posts.show',['post'=>$post_id]);
+    }
+
 }
