@@ -40,8 +40,10 @@
 </div>
     @foreach($post->comments as $comment)
         <div class="card mt-1">
-            <div class="card-body  mt-4">
+            <div class="card-body  mt-2">
                   {{  $comment->comment }}
+                <a href="{{ route('comments.update',['post'=>$post->id]) }}"> <i class="fa fa-edit"></i></a>
+                <a href="{{ route('comments.destroy',['post'=>$post->id]) }}"> <i class="fa fa-trash"></i></a>
             </div>
         </div>
     @endforeach

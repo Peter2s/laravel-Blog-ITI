@@ -26,8 +26,13 @@ Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 Route::put('posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore');
+
 /* comments routes*/
 Route::post('posts/{post}/comments', [PostController::class, 'addComment'])->name('comments.store');
+Route::put('posts/{post}/comments', [PostController::class, 'EditComment'])->name('comments.update');
+Route::delete('posts/{post}/comments', [PostController::class, 'DeleteComment'])->name('comments.destroy');
+
+
 
 
 

@@ -62,5 +62,11 @@ class PostController extends Controller
 
         return to_route('posts.show',['post'=>$post_id]);
     }
+    public function EditComment($comment){
+
+    }
+    public function DeleteComment($comment){
+
+    }
 
 }
