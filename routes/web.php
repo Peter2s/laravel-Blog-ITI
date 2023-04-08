@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,7 @@ Route::get('/', function () {
 
 /* posts routes */
 
-Route::prefix('posts')->controller(PostController::class)->group(function () {
+Route::prefix('posts')->middleware('auth')->controller(PostController::class)->group(function () {
     Route::get('/', 'index')->name('posts.index');
     Route::get('/create', 'create')->name('posts.create');
     Route::get('/{post}/edit', 'edit')->name('posts.edit');
@@ -41,10 +42,6 @@ Route::prefix('posts')->controller(PostController::class)->group(function () {
 
 
 
-
-
-
-
-
-
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,22 +23,34 @@ class PostController extends Controller
     }
     public function edit($post)
     {
-       return view('posts.edit',['post'=>[]]);
+       return view('posts.edit',['post'=>$post]);
     }
     public function show($post_id)
     {
         $post = Post::where('id', $post_id)->first();
         return view('posts.show',['post'=>$post]);
     }
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $data = $request->all();
-        $post = Post::create($data);
+        $post = new Post();
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->user_id = $request->user_id;
+        if ($request->hasFile('image')) {
+            $post->image = $request->file('image')->store('images', 'public');
+        }
+        $post->save();        
         return to_route('posts.index');
     }
-    public function update($post_id)
+    public function update($post_id,UpdatePostRequest $request)
     {
-        return to_route('posts.index');
+        $post = Post::where('id', $post_id)->first();
+        if($post){
+            $post->title = $request->title;
+            $post->description = $request->description;
+            $post->save();
+        }
+        return to_route('posts.show',['post'=>$post]);
     }
     public function destroy($post_id)
     {

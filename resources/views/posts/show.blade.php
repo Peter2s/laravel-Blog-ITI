@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.app')
 @section('title')
     Post
 @endsection
@@ -25,6 +25,10 @@
             @endif
             @if ($post->created_at != null)
                 <h5 class="card-title">Created At: {{ $post->created_at }}</h5>
+            @endif
+            {{-- @dd($post->image) --}}
+            @if ($post->image)
+                <img class="" width="400px" height="500px" src="{{ $post->image }}" alt="{{ $post->description }}" />
             @endif
         </div>
     </div>

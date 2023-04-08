@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.app')
 
 @section('title')
 index
@@ -16,6 +16,7 @@ index
                 <th>ID</th>
                 <th>Title</th>
                 <th>Description</th>
+                <th>slug</th>
                 <th>Posted By</th>
                 <th>Created At</th>
                 <th>Actions</th>
@@ -27,6 +28,7 @@ index
                 <td>{{ $post->id }}</td>
                 <td>{{ $post->title }}</td>
                 <td>{{ $post->description }}</td>
+                <td>{{ $post->slug }}</td>
                 @if ($post->user != null)
                     <td>{{ $post->user->name }}</td>
                 @else

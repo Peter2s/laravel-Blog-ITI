@@ -11,7 +11,7 @@ class StorePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,9 +22,11 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => 'required|min:3|max:255|unique:post,title',
+            "title" => 'required|min:3|max:255|unique:posts,title',
             "description" =>'required|min:10|max:255',
-            'user_id'=>'required',
+            'user_id'=>'required|exists:users,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+
 
         ];
     }
@@ -37,7 +39,10 @@ class StorePostRequest extends FormRequest
                 'description.min' => 'Description Must be more than 10 character',
                 'description.max' => 'Description cannot exceed 225 character',
                 'user_id.required' => 'Select User',
-                'description.exists' => 'Invalid User ID',
+                'user_id..exists' => 'Invalid User ID',
+                'image.required' => 'Select Image',
+                'image.mimes' => 'Image must be a [ jpeg , png , jpg , gif ] file',
+        
             ];
         }
     }
