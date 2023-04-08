@@ -14,7 +14,7 @@
             </ul>
         </div>
     @endif
-    <form method="POST" action="{{ route('posts.update', ['post' => $post]) }}">
+    <form method="POST" action="{{ route('posts.update', ['post' => $post]) }}" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
         <div class="form-group">
@@ -25,8 +25,9 @@
           <div class="form-group">
             <label for="title">Descrption </label>
             <input type="text" class="form-control" name="description" placeholder="Enter post title">
-            <small id="title" class="form-text text-muted">enter post title here.</small>
+            <small id="title" class="form-text text-muted">enter post Descrption here.</small>
         </div>
+        <input class="form-control" name='image' type="file" />
         <input type="submit" class="btn btn-success" value="Edit">
     </form>
 @endsection

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -48,7 +49,13 @@ class PostController extends Controller
         if($post){
             $post->title = $request->title;
             $post->description = $request->description;
+            if($request->hasFile('image')){
+                $post->image = $request->file('image')->store('images', 'public');
+                $old_image = $post->image;
+                Storage::delete($old_image);
+            }
             $post->save();
+            
         }
         return to_route('posts.show',['post'=>$post]);
     }

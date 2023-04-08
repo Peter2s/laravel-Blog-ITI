@@ -28,7 +28,7 @@
             @endif
             {{-- @dd($post->image) --}}
             @if ($post->image)
-                <img class="" width="400px" height="500px" src="{{ $post->image }}" alt="{{ $post->description }}" />
+                <img class="img-thumbnail" src="{{ $post->image }}" alt="{{ $post->description }}" />
             @endif
         </div>
     </div>
