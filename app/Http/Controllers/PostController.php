@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -62,11 +61,23 @@ class PostController extends Controller
 
         return to_route('posts.show',['post'=>$post_id]);
     }
-    public function EditComment($comment){
+    public function EditComment($post_id,$comment_id){
+        $post = Post::find($post_id);
+        if($post){
+            $post->comments()->where('id', $comment_id)->update([
+                'comment'=>request()->comment,
+            ]);
+        }
+
+        return to_route('posts.show',['post'=>$post_id]);
 
     }
-    public function DeleteComment($comment){
-
+    public function DeleteComment($post_id,$comment_id){
+        $post = Post::find($post_id);
+        if($post){
+            $post->comments()->find($comment_id)->delete();
+        }
+        return to_route('posts.show',['post'=>$post_id]);
     }
 
 }

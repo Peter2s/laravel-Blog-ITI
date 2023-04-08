@@ -5,7 +5,8 @@ Edit
 @endsection
 
 @section('content')
-<form method="POST" action="{{ route('posts.update',['post'=>$post['id']]) }}">
+@dd($post)
+<form method="POST" action="{{ route('posts.update',['post'=>$post->id]) }}">
     @csrf
     @method('PATCH')
     <div class="form-group">

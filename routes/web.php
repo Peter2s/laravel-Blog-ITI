@@ -17,20 +17,26 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-/* posts routes */
-Route::get('/posts',[PostController::class,'index'])->name('posts.index');
-Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
-Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
-Route::put('posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore');
 
-/* comments routes*/
-Route::post('posts/{post}/comments', [PostController::class, 'addComment'])->name('comments.store');
-Route::put('posts/{post}/comments', [PostController::class, 'EditComment'])->name('comments.update');
-Route::delete('posts/{post}/comments', [PostController::class, 'DeleteComment'])->name('comments.destroy');
+/* posts routes */
+
+Route::prefix('posts')->controller(PostController::class)->group(function () {
+    Route::get('/', 'index')->name('posts.index');
+    Route::get('/create', 'create')->name('posts.create');
+    Route::get('/{post}/edit', 'edit')->name('posts.edit');
+    Route::get('/{post}', 'show')->name('posts.show');
+    Route::post('', 'store')->name('posts.store');
+    Route::patch('/{post}', 'update')->name('posts.update');
+    Route::delete('/{post}', 'destroy')->name('posts.destroy');
+    Route::put('/{post}/restore', 'restore')->name('posts.restore');
+
+    /* comments routes*/
+    Route::post('/{post}/comments','addComment')->name('comments.store');
+    Route::put('/{post}/comments/{comment}', 'EditComment')->name('comments.update');
+    Route::delete('/{post}/comments/{comment}','DeleteComment')->name('comments.destroy');
+
+});
+
 
 
 

@@ -36,18 +36,18 @@ index
                 <td>
                     <div class="d-flex  p-2  justify-content-between">
                     @if(!$post->trashed())
-                        <x-button type='info' route="{{ route('posts.show' , ['post'=>$post['id']]) }}"> View </x-button>
-                        <x-button type='primary' route="{{ route('posts.edit' , ['post'=>$post['id']]) }}"> Edit </x-button>
+                        <x-button type='info' route="{{ route('posts.show' , ['post'=>$post->id]) }}"> View </x-button>
+                        <x-button type='primary' route="{{ route('posts.edit' , ['post'=>$post->id]) }}"> Edit </x-button>
                     @endif
 
                     @if (!$post->trashed())
-                    <form class="deleteFrom d-inline" action="{{ route('posts.destroy' , ['post'=>$post['id']] ) }}" method="POST">
+                    <form class="deleteFrom d-inline" action="{{ route('posts.destroy' , ['post'=>$post->id] ) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger"> Delete</button>
                     </form>
                     @else
-                    <form class="deleteFrom d-inline" action="{{ route('posts.restore' , ['post'=>$post['id']] ) }}" method="POST">
+                    <form class="deleteFrom d-inline" action="{{ route('posts.restore' , ['post'=>$post->id] ) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <button type="submit" class="btn btn-success"> Restore</button>
