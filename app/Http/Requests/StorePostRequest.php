@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\AllowedCreateThreePosts;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePostRequest extends FormRequest
@@ -24,7 +25,7 @@ class StorePostRequest extends FormRequest
         return [
             "title" => 'required|min:3|max:255|unique:posts,title',
             "description" =>'required|min:10|max:255',
-            'user_id'=>'required|exists:users,id',
+            'user_id'=>['required','exists:users,id', new  AllowedCreateThreePosts],
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
 
 
