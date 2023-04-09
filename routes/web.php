@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +41,48 @@ Route::prefix('posts')->middleware('auth')->controller(PostController::class)->g
 });
 
 
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+})->name('login-github');
 
+Route::get('/auth/callback', function () {
+
+    $githubUser = Socialite::driver('github')->stateless()->user();
+
+    $user = User::updateOrCreate([
+        'email' => $githubUser->email,
+    ], [
+        'name' => $githubUser->name,
+        'github_id' => $githubUser->id,
+        'github_token' => $githubUser->token,
+        'github_refresh_token' => $githubUser->refreshToken,
+    ]);
+
+    Auth::login($user);
+
+    return redirect('/posts');
+});
+
+
+Route::get('/auth/google/redirect', function () {
+    return Socialite::driver('google')->redirect();
+
+})->name('google');
+
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->stateless()->user();
+    $user = User::updateOrCreate([
+        'email' => $googleUser->email,
+    ], [
+        'name' => $googleUser->name,
+        'google_id' => $googleUser->id,
+
+    ]);
+
+    Auth::login($user);
+
+    return redirect('/posts');
+});
 
 
 Auth::routes();
